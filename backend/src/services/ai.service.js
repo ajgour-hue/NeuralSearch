@@ -1,19 +1,21 @@
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import {HumanMessage, SystemMessage} from "langchain"
+import {
+  HumanMessage,
+  SystemMessage,
+  AIMessage
+} from "@langchain/core/messages";
 import { ChatMistralAI } from "@langchain/mistralai";
 import { ChatOpenAI } from "@langchain/openai";
 
 const geminiModel = new ChatGoogleGenerativeAI({
-    model: "gemini-2.5-flash-lite",
-    apiKey: process.env.GEMINI_API_KEY
+  model: "gemini-2.5-flash-lite",
+  apiKey: process.env.GEMINI_API_KEY,
 });
 
 const mistralModel = new ChatMistralAI({
-    model: "mistral-small-latest",
-    apiKey: process.env.MISTRAL_API_KEY
+  model: "mistral-small-latest",
+  apiKey: process.env.MISTRAL_API_KEY,
 });
-
-
 
 // OpenRouter model
 const openrouterModel = new ChatOpenAI({
@@ -27,18 +29,24 @@ const openrouterModel = new ChatOpenAI({
 });
 
 // response
-export async function generateResponse(message) {
-  const response = await openrouterModel.invoke([
-    new HumanMessage(message)
-  ]);
-  
-    return response.text;
+export async function generateResponse(messages) {
+
+    const response = await geminiModel.invoke(messages.map(msg => {
+        if (msg.role == "user") {
+            return new HumanMessage(msg.content)
+        } else if (msg.role == "ai") {
+            return new AIMessage(msg.content)
+        }
+    }));
+
+    return response.content;
+
 }
 
-// title for the chat .
+// title for the chat
 export async function generateTitle(message) {
-    const response = await openrouterModel.invoke([
-        new SystemMessage(`
+  const response = await mistralModel.invoke([
+    new SystemMessage(`
 You generate short, clear conversation titles.
 
 Rules:
@@ -48,15 +56,14 @@ Rules:
 - Return only the title
 - Make the title specific and meaningful
 - Avoid generic titles like "New Chat" or "Conversation"
-        `),
+    `),
 
-        new HumanMessage(`
+    new HumanMessage(`
 Generate a concise conversation title for this message:
 
 ${message}
-        `)
-    ]);
+    `),
+  ]);
 
-    return response.content;
+  return response.content;
 }
-
