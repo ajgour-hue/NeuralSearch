@@ -7,6 +7,9 @@ connectToDB()
 
 
 // testAi();
+app.get("/", (req, res) => {
+  res.send("Backend is running 🚀");
+});
 
 const httpServer = http.createServer(app);
 initSocket(httpServer);
