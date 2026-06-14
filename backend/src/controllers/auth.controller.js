@@ -7,7 +7,10 @@ dotenv.config()
 // register user controller function
 export const register = async (req, res) => {
 
+    console.log("Register route hit");
+    
     const { username, email, password } = req.body;
+
 
     const existingUser = await userModel.findOne({
         $or: [
@@ -29,11 +32,17 @@ export const register = async (req, res) => {
         email,
         password
     });
+    console.log("User created");
 
     const emailVerificationToken = jwt.sign({
         email: user.email,
     }, process.env.JWT_SECRET)
 
+    console.log("Token generated");
+
+console.log("Calling sendEmail");
+
+    console.log("Before sendEmail");
 
     await sendEmail({
         to: email,
@@ -47,6 +56,8 @@ export const register = async (req, res) => {
                 <p>Best regards,<br>The Perplexity Team</p>
         `
     })
+
+    console.log("After finished");
 
     res.status(201).json({
         message: "User registered successfully",

@@ -53,6 +53,7 @@ oauth2Client.setCredentials({
 async function createTransporter() {
 
   const accessToken = await oauth2Client.getAccessToken();
+  console.log("Access Token:", accessToken);
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -89,11 +90,39 @@ async function verifyTransporter() {
 verifyTransporter();
 
 // send email function
-export async function sendEmail({ to, subject, html, text = "" }) {
+// export async function sendEmail({ to, subject, html, text = "" }) {
 
+//   try {
+
+//     console.log("sendEmail entered");
+
+//     const transporter = await createTransporter();
+//     console.log("transporter created");
+
+//     const mailOptions = {
+//       from: process.env.GOOGLE_USER,
+//       to,
+//       subject,
+//       html,
+//       text,
+//     };
+
+//     const details = await transporter.sendMail(mailOptions);
+//     console.log("Email sent:", details);
+
+//   } catch (error) {
+
+//     console.log("Send mail error:", error);
+
+//   }
+// }
+
+export async function sendEmail({ to, subject, html, text = "" }) {
   try {
+    console.log("sendEmail entered");
 
     const transporter = await createTransporter();
+    console.log("transporter created");
 
     const mailOptions = {
       from: process.env.GOOGLE_USER,
@@ -103,13 +132,17 @@ export async function sendEmail({ to, subject, html, text = "" }) {
       text,
     };
 
+    console.log("About to send mail");
+
     const details = await transporter.sendMail(mailOptions);
 
     console.log("Email sent:", details);
 
+    return details;
+
   } catch (error) {
+    console.error("Send mail error:", error);
 
-    console.log("Send mail error:", error);
-
+    throw error; // Important
   }
 }
