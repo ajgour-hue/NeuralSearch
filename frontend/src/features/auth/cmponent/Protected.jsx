@@ -23,7 +23,7 @@ const Protected = ({ children }) => {
         </div>
 
         <p className="mt-4 text-gray-500 text-sm">
-          Loading...
+          Loading pls wait for a sec...
         </p>
       </div>
     )
