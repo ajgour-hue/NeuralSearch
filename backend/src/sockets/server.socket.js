@@ -13,7 +13,9 @@ export function initSocket(httpServer) {
     cors: {
         origin: [
             "http://localhost:5173",
-            "https://perplexity-frontend-hwcu.onrender.com"
+            "https://perplexity-frontend-hwcu.onrender.com",
+            "https://perplexity-cyan-ten.vercel.app",
+            "https://perplexity-36v6frwb7-ajgour-hues-projects.vercel.app"
         ],
         credentials: true
     }

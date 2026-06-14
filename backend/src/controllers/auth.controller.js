@@ -4,77 +4,169 @@ import { sendEmail } from '../services/mail.service.js';
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 dotenv.config()
+
 // register user controller function
-export const register = async (req, res) => {
+// export const register = async (req, res) => {
 
-    console.log("Register route hit");
+//     console.log("Register route hit");
     
-    const { username, email, password } = req.body;
+//     const { username, email, password } = req.body;
 
 
-    const existingUser = await userModel.findOne({
-        $or: [
-            { email: email },
-            { username: username }
-        ]
-    });
+//     const existingUser = await userModel.findOne({
+//         $or: [
+//             { email: email },
+//             { username: username }
+//         ]
+//     });
 
-    if (existingUser) {
-        return res.status(400).json({
-            message: "User with this email or username already exists",
-            success: false
-        });
-    }
+//     if (existingUser) {
+//         return res.status(400).json({
+//             message: "User with this email or username already exists",
+//             success: false
+//         });
+//     }
 
-    // create user
-    const user = await userModel.create({
-        username,
-        email,
-        password
-    });
-    console.log("User created");
+//     // create user
+//     const user = await userModel.create({
+//         username,
+//         email,
+//         password
+//     });
+//     console.log("User created");
 
-    const emailVerificationToken = jwt.sign({
-        email: user.email,
-    }, process.env.JWT_SECRET)
+//     const emailVerificationToken = jwt.sign({
+//         email: user.email,
+//     }, process.env.JWT_SECRET)
 
-    console.log("Token generated");
+//     console.log("Token generated");
 
-console.log("Calling sendEmail");
+// console.log("Calling sendEmail");
 
-    console.log("Before sendEmail");
+//     console.log("Before sendEmail");
 
-    await sendEmail({
-        to: email,
-        subject: "Welcome to Perplexity!",
-        html: `
-                <p>Hi ${username},</p>
-                <p>Thank you for registering at <strong>Perplexity</strong>. We're excited to have you on board!</p>
-                <p>To get started, please verify your email address by clicking the link below:</p>
-                <a href="https://perplexity-wvf6.onrender.com/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
-                <p>If you did not create an account, please ignore this email.</p>
-                <p>Best regards,<br>The Perplexity Team</p>
-        `
-    })
+//     await sendEmail({
+//         to: email,
+//         subject: "Welcome to Perplexity!",
+//         html: `
+//                 <p>Hi ${username},</p>
+//                 <p>Thank you for registering at <strong>Perplexity</strong>. We're excited to have you on board!</p>
+//                 <p>To get started, please verify your email address by clicking the link below:</p>
+//                 <a href="https://perplexity-wvf6.onrender.com/api/auth/verify-email?token=${emailVerificationToken}">Verify Email</a>
+//                 <p>If you did not create an account, please ignore this email.</p>
+//                 <p>Best regards,<br>The Perplexity Team</p>
+//         `
+//     })
 
-    console.log("After finished");
+//     console.log("After finished");
 
-    res.status(201).json({
-        message: "User registered successfully",
-        success: true,
-        user: {
-            id: user._id,
-            username: user.username,
-            email: user.email
+//     res.status(201).json({
+//         message: "User registered successfully",
+//         success: true,
+//         user: {
+//             id: user._id,
+//             username: user.username,
+//             email: user.email
+//         }
+//     });
+
+
+
+// };
+
+    export const register = async (req, res) => {
+        try {
+
+            console.log("Register route hit");
+
+            const { username, email, password } = req.body;
+
+            const existingUser = await userModel.findOne({
+                $or: [
+                    { email },
+                    { username }
+                ]
+            });
+
+            if (existingUser) {
+                return res.status(400).json({
+                    message: "User with this email or username already exists",
+                    success: false
+                });
+            }
+
+            console.log("Creating user...");
+
+            const user = await userModel.create({
+                username,
+                email,
+                password
+            });
+
+            console.log("User created");
+
+            const emailVerificationToken = jwt.sign(
+                {
+                    email: user.email,
+                },
+                process.env.JWT_SECRET
+            );
+
+            console.log("Token generated");
+
+            console.log("Before sendEmail");
+
+            console.time("email");
+
+
+            await sendEmail({
+                to: email,
+                subject: "Welcome to Perplexity!",
+                html: `
+                    <p>Hi ${username},</p>
+                    <p>Thank you for registering at <strong>Perplexity</strong>.</p>
+                    <p>To get started, please verify your email address by clicking the link below:</p>
+                    <a href="https://perplexity-wvf6.onrender.com/api/auth/verify-email?token=${emailVerificationToken}">
+                        Verify Email
+                    </a>
+                    <p>If you did not create an account, please ignore this email.</p>
+                    <p>Best regards,<br>The Perplexity Team</p>
+                `
+            });
+
+            
+
+    console.timeEnd("email");
+
+            console.log("After sendEmail");
+
+            return res.status(201).json({
+                message: "User registered successfully",
+                success: true,
+                user: {
+                    id: user._id,
+                    username: user.username,
+                    email: user.email
+                }
+            });
+
+        } catch (error) {
+
+            console.error("========== REGISTER ERROR ==========");
+            console.error(error);
+            console.error(error.stack);
+
+            return res.status(500).json({
+                success: false,
+                message: "Registration failed",
+                error: error.message
+            });
         }
-    });
-
-
-
-};
+    };
 
 // verify email controller function
 
+console.log("JWT_SECRET:", !!process.env.JWT_SECRET);
 export const verifyEmail = async (req, res) => {
     console.log("VERIFY ROUTE HIT");
     const { token } = req.query;
