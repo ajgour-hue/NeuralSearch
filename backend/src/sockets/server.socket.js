@@ -25,7 +25,7 @@ export function initSocket(httpServer) {
     
 
     io.on('connection', (socket) => {
-        console.log('a user connected with id: ' + socket.id  );
+         console.log('a user connected with id: ' + socket.id  );
     });
 }   
 

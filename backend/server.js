@@ -8,7 +8,7 @@ connectToDB()
 
 // testAi();
 app.get("/", (req, res) => {
-  res.send("Backend is running 🚀");
+  res.send("Backend is running on port 3000 ");
 });
 
 const httpServer = http.createServer(app);

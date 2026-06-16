@@ -1,11 +1,12 @@
 import React from "react";
-import { RiSunLine } from "@remixicon/react";
+import { RiSunLine ,RiDeleteBin6Line  } from "@remixicon/react";
 import { useChat } from "../chat/hooks/useChat.js"
 
 import { useNavigate } from "react-router-dom";
 
-import { 
-  RiLogoutBoxRLine } from "react-icons/ri";
+import {
+  RiLogoutBoxRLine
+} from "react-icons/ri";
 const Sidebar = ({
   chats = [],
   currentChatId,
@@ -14,11 +15,11 @@ const Sidebar = ({
   setIsSidebarOpen,
   handleDeleteChat,
 }) => {
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-const { handleLogout } = useChat();
-  
- 
+  const { handleLogout } = useChat();
+
+
 
   return (
     <>
@@ -136,7 +137,7 @@ const { handleLogout } = useChat();
                   );
 
                   if (confirmDelete) {
-                   handleDeleteChat(chat.id);
+                    handleDeleteChat(chat.id);
                   }
                 }}
                 className="
@@ -148,7 +149,7 @@ const { handleLogout } = useChat();
     transition
   "
               >
-                🗑️
+                <RiDeleteBin6Line size={20} />
               </button>
             </div>
           ))}
@@ -156,22 +157,31 @@ const { handleLogout } = useChat();
 
 
         {/* Footer */}
-          <div className="p-4 shrink-0 ">
-           <button
-    onClick={async () => {
-      const confirmLogout = window.confirm(
-        "Are you sure you want to logout?"
-      );
+        <div className="p-4 shrink-0 ">
+          <button
+            onClick={async () => {
+              const confirmLogout = window.confirm(
+                "Are you sure you want to logout?"
+              );
 
-      if (confirmLogout) {
-       console.log("Logout clicked");
-  await handleLogout();
-  console.log("Logout success");
-  navigate("/login");
-  window.location.href = "/login";
-      }
-    }}
-              className="
+              if (confirmLogout) {
+                try {
+                  // console.log("Logout clicked");
+
+                  await handleLogout();
+
+                  // console.log("Logout success");
+                  // console.log("Before navigate");
+
+                  navigate("/login");
+
+                  console.log("After navigate");
+                } catch (error) {
+                  // console.error("Logout failed:", error);
+                }
+              }
+            }}
+            className="
                 cursor-pointer
                 flex items-center gap-3
                 text-zinc-400
@@ -180,12 +190,12 @@ const { handleLogout } = useChat();
                 text-[15px]
                 font-medium
               "
-            >
-         
+          >
+
             <span>LOGOUT</span>
-             <RiLogoutBoxRLine size={20} />
-            </button>
-          </div>
+            <RiLogoutBoxRLine size={20} />
+          </button>
+        </div>
       </aside>
     </>
   );
