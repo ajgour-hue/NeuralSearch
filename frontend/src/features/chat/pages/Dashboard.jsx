@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useChat } from '../hooks/useChat'
 import {
@@ -6,6 +6,7 @@ import {
   RiBarChartBoxLine,
   RiSparklingLine,
   RiCompass3Line,
+  RiMicLine,
 } from "@remixicon/react";
 import Sidebar from '../../component/Sidebar';
 import ReactMarkdown from "react-markdown";
@@ -13,9 +14,10 @@ import remarkGfm from "remark-gfm";
 
 const Dashboard = () => {
   const chat = useChat()
+  const inputRef = useRef();
 
   const [chatInput, setChatInput] = useState('')
-
+  const [isThinking, setIsThinking] = useState(false);
   const chats = useSelector((state) => state.chat.chats)
   const currentChatId = useSelector(
     (state) => state.chat.currentChatId
@@ -25,10 +27,15 @@ const Dashboard = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
-    chat.initializeSocketConnection(),
+    chat.initializeSocketConnection();
+    chat.handleGetChats();
+  }, []);
 
-      chat.handleGetChats()
-  }, [])
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [currentChatId]);
+
+
 
 
   // hardcoded suggestions and sources for the demo, can be made dynamic in the future
@@ -54,22 +61,25 @@ const Dashboard = () => {
 
 
   const handleSubmitMessage = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    console.log("Submit Clicked");
+    const trimmedMessage = chatInput.trim();
 
-    const trimmedMessage = chatInput.trim()
+    if (!trimmedMessage) return;
 
-    if (!trimmedMessage) return
+    setIsThinking(true);
 
     await chat.handleSendMessage({
       message: trimmedMessage,
       chatId: currentChatId,
-    })
+    });
 
-    setChatInput('')
-  }
+    setIsThinking(false);
 
+    setChatInput("");
+
+    inputRef.current?.focus();
+  };
   const openChat = (chatId) => {
     chat.handleOpenChat(chatId)
   }
@@ -151,9 +161,18 @@ const Dashboard = () => {
                       {message.role === "assistant" ? (
                         <ReactMarkdown
                           remarkPlugins={[remarkGfm]}
-                          className="prose prose-invert max-w-none"
+                          className="
+    prose
+    prose-invert
+    max-w-none
+    prose-headings:text-white
+    prose-p:text-zinc-200
+    prose-strong:text-white
+    prose-li:text-zinc-200
+    prose-code:text-green-400
+  "
                         >
-                          {message.content}
+                          {message.content.replace(/\\n/g, "\n")}
                         </ReactMarkdown>
                       ) : (
                         message.content
@@ -161,6 +180,13 @@ const Dashboard = () => {
                     </div>
                   </div>
                 ))}
+                {isThinking && (
+                  <div className="px-6 py-4">
+                    <span className="animate-pulse text-zinc-400">
+                      Thinking...
+                    </span>
+                  </div>
+                )}
               </div>
             ) : (
 
@@ -265,6 +291,7 @@ const Dashboard = () => {
               <div className="flex items-center gap-3 rounded-3xl border border-white/10 bg-[#0b0b0b] px-4 py-3 shadow-lg">
                 <input
                   type="text"
+                  ref={inputRef}
                   value={chatInput}
                   onChange={(e) =>
                     setChatInput(e.target.value)
@@ -272,6 +299,13 @@ const Dashboard = () => {
                   placeholder="Ask anything..."
                   className="flex-1 bg-transparent outline-none text-white placeholder:text-zinc-500"
                 />
+
+                <button
+                  type="button"
+                  className="text-zinc-700 hover:text-zinc-100 cursor-pointer mr-3"
+                >
+                  <RiMicLine size={22} />
+                </button>
 
                 <button
                   type="submit"

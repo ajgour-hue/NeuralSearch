@@ -1,25 +1,35 @@
 import React from "react";
-import { RiSunLine ,RiDeleteBin6Line  } from "@remixicon/react";
+import { RiUserSmileLine, RiSunLine, RiDeleteBin6Line, RiSettings3Line } from "@remixicon/react";
 import { useChat } from "../chat/hooks/useChat.js"
-
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { RiLogoutBoxRLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+const Sidebar = ({ chats = [], currentChatId, openChat, isSidebarOpen, setIsSidebarOpen, handleDeleteChat, }) => {
 
-import {
-  RiLogoutBoxRLine
-} from "react-icons/ri";
-const Sidebar = ({
-  chats = [],
-  currentChatId,
-  openChat,
-  isSidebarOpen,
-  setIsSidebarOpen,
-  handleDeleteChat,
-}) => {
+
   const navigate = useNavigate();
 
   const { handleLogout } = useChat();
 
+  const [openSettings, setOpenSettings] = useState(false);
 
+  const user = useSelector(state => state.auth.user)
+
+
+
+  useEffect(() => {
+    const closeMenu = () => setOpenSettings(false);
+
+    if (openSettings) {
+      window.addEventListener("click", closeMenu);
+    }
+
+    return () => {
+      window.removeEventListener("click", closeMenu);
+    };
+  }, [openSettings]);
 
   return (
     <>
@@ -140,14 +150,16 @@ const Sidebar = ({
                     handleDeleteChat(chat.id);
                   }
                 }}
-                className="
-    cursor-pointer
-    opacity-0
-    group-hover:opacity-100
-    text-zinc-500
-    hover:text-red-400
-    transition
-  "
+              className="
+  cursor-pointer
+  opacity-100
+  md:opacity-0
+  md:group-hover:opacity-100
+  text-zinc-500
+  hover:text-red-400
+  transition
+  shrink-0
+"
               >
                 <RiDeleteBin6Line size={20} />
               </button>
@@ -157,45 +169,67 @@ const Sidebar = ({
 
 
         {/* Footer */}
-        <div className="p-4 shrink-0 ">
+
+
+        <div className="relative p-4 flex gap-3">
+          {/* Settings Button */}
           <button
-            onClick={async () => {
-              const confirmLogout = window.confirm(
-                "Are you sure you want to logout?"
-              );
-
-              if (confirmLogout) {
-                try {
-                  // console.log("Logout clicked");
-
-                  await handleLogout();
-
-                  // console.log("Logout success");
-                  // console.log("Before navigate");
-
-                  navigate("/login");
-
-                  console.log("After navigate");
-                } catch (error) {
-                  // console.error("Logout failed:", error);
-                }
-              }
-            }}
-            className="
-                cursor-pointer
-                flex items-center gap-3
-                text-zinc-400
-                hover:text-white
-                transition-colors
-                text-[15px]
-                font-medium
-              "
+           onClick={(e) => {
+      e.stopPropagation();
+      setOpenSettings(!openSettings);
+    }}
+            className="cursor-pointer text-zinc-400 hover:text-white transition-colors"
           >
 
-            <span>LOGOUT</span>
-            <RiLogoutBoxRLine size={20} />
+            <RiUserSmileLine size={24} />
           </button>
+
+          <div className="flex flex-col">
+            <span className="text-sm font-medium text-white">
+              {user?.username || "User"}
+
+            </span>
+            <span className="text-xs text-zinc-500">
+              Profile
+            </span>
+          </div>
+
+
+          {/* Dropdown */}
+          {openSettings && (
+            <div className="absolute bottom-14 left-4 w-48 bg-zinc-900 border border-zinc-700 rounded-xl shadow-xl overflow-hidden">
+
+              {/* Theme */}
+              <button
+                className="w-full flex items-center gap-3 px-4 py-3 text-zinc-300 hover:bg-zinc-800"
+              >
+                <RiSunLine size={18} />
+                <span>Light Mode</span>
+              </button>
+
+              {/* Logout */}
+              <button
+                onClick={async () => {
+                  const confirmLogout = window.confirm(
+                    "Are you sure you want to logout?"
+                  );
+
+                  if (confirmLogout) {
+                    await handleLogout();
+                    navigate("/login");
+                  }
+                }}
+                className="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-zinc-800"
+              >
+                <RiLogoutBoxRLine size={18} />
+                <span>Logout</span>
+              </button>
+
+            </div>
+          )}
         </div>
+
+
       </aside>
     </>
   );

@@ -15,6 +15,7 @@ const Login = () => {
 
     const navigate = useNavigate()
 
+    
     const submitForm = async (event) => {
         event.preventDefault()
 
@@ -28,8 +29,7 @@ const Login = () => {
             navigate("/")
         }
     }
-console.log("Login User:", user);
-console.log("Loading:", loading);
+
     if(!loading && user){
         return <Navigate to="/" replace />
     }
