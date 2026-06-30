@@ -60,7 +60,7 @@ export const register = async (req, res) => {
                     <p>Hi ${username},</p>
                     <p>Thank you for registering at <strong>Perplexity</strong>.</p>
                     <p>To get started, please verify your email address by clicking the link below:</p>
-                    <a href="https://perplexity-wvf6.onrender.com/api/auth/verify-email?token=${emailVerificationToken}">
+                    <a href="${process.env.BACKEND_URL}/api/auth/verify-email?token=${emailVerificationToken}">
                         Verify Email
                     </a>
                     <p>If you did not create an account, please ignore this email.</p>
@@ -129,7 +129,7 @@ export const verifyEmail = async (req, res) => {
         <p>Hi ${user.username},</p>
         <p>Your email has been successfully verified. You can now log in to your account.</p>
         <p>Best regards,<br>The Perplexity Team</p>
-       <a href="https://perplexity-frontend-hwcu.onrender.com/login">
+      <a href="${process.env.FRONTEND_URL}/login">
   Click here to login
 </a>
     `;
