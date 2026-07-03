@@ -18,6 +18,8 @@ const Dashboard = () => {
 
   const [chatInput, setChatInput] = useState('')
   const [isThinking, setIsThinking] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+
   const chats = useSelector((state) => state.chat.chats)
   const currentChatId = useSelector(
     (state) => state.chat.currentChatId
@@ -33,8 +35,11 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    // focus the input field
-    inputRef.current?.focus();
+    // focus the input field only if the screen width is greater than or equal to 768px (desktop view)  
+    if (window.innerWidth >= 768) {
+      inputRef.current?.focus();
+    }
+
 
     // update the document title on favicon site
     if (currentChat?.title) {
@@ -89,6 +94,7 @@ const Dashboard = () => {
 
     inputRef.current?.focus();
   };
+
   const openChat = (chatId) => {
     chat.handleOpenChat(chatId)
   }
@@ -96,12 +102,17 @@ const Dashboard = () => {
   // the quick search buttons handlinhg
   const handleSearch = async (query) => {
     setChatInput(query);
+    setIsThinking(true);
 
-    // if there's no current chat, create one first before sending the message
-    await chat.handleSendMessage({
-      message: query,
-      chatId: currentChatId,
-    });
+    try {
+      await chat.handleSendMessage({
+        message: query,
+        chatId: currentChatId,
+      });
+      setChatInput("");
+    } finally {
+      setIsThinking(false);
+    }
   };
 
 
@@ -301,6 +312,38 @@ const Dashboard = () => {
               className="max-w-4xl mx-auto w-full"
             >
               <div className="flex items-center gap-3 rounded-3xl border border-white/10 bg-[#0b0b0b] px-4 py-3 shadow-lg">
+
+                <div className="relative">
+
+
+                  {/* email tool */}
+                  <button
+                    type="button"
+                    onClick={() => setShowMenu(!showMenu)}
+                    className="text-zinc-400 hover:text-white transition"
+                  >
+                    +
+                  </button>
+
+                  {showMenu && (
+                    <div className="absolute bottom-14 left-0 w-52 rounded-2xl bg-[#111] border border-white/10 shadow-xl overflow-hidden">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setShowMenu(false);
+                          console.log("Send Email");
+                        }}
+                        className="w-full px-4 py-3 text-left hover:bg-white/10 flex items-center gap-3"
+                      >
+                        📧
+                        <span>Send Email</span>
+                      </button>
+                    </div>
+                  )}
+
+                </div>
+
+
                 <input
                   type="text"
                   ref={inputRef}
@@ -319,12 +362,17 @@ const Dashboard = () => {
                   <RiMicLine size={22} />
                 </button>
 
+
                 <button
                   type="submit"
-                  disabled={!chatInput.trim()}
-                  className=" cursor-pointer rounded-2xl bg-white text-black px-5 py-2 font-medium transition hover:opacity-90 disabled:opacity-40"
+                  disabled={!chatInput.trim() || isThinking}
+                  className="cursor-pointer rounded-2xl bg-white text-black px-5 py-2 font-medium transition hover:opacity-90 disabled:opacity-40 flex items-center justify-center min-w-[80px]"
                 >
-                  Send
+                  {isThinking ? (
+                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-black border-t-transparent"></div>
+                  ) : (
+                    "Send"
+                  )}
                 </button>
               </div>
             </form>
