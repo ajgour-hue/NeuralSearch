@@ -1,28 +1,32 @@
 import { initializeSocketConnection } from "../service/chat.socket";
-import { sendMessage, getChats, getMessages, deleteChat ,logout } from "../service/chat.api.js"
-import { setChats, setCurrentChatId, setError, setLoading, createNewChat, addNewMessage  ,addMessages } from "../chat.slice.js";
+import { sendMessage, getChats, getMessages, deleteChat, logout } from "../service/chat.api.js"
+import { setChats, setCurrentChatId, setError, setLoading, createNewChat, addNewMessage, addMessages } from "../chat.slice.js";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../auth/auth.slice.js";
+import { useSelector } from "react-redux";
+
 
 export const useChat = () => {
 
+    const user = useSelector((state) => state.auth.user);
     const dispatch = useDispatch();
 
     async function handleSendMessage({ message, chatId }) {
         dispatch(setLoading(true))
+
 
         try {
             const data = await sendMessage({ message, chatId })
 
             const { chatId: newChatId, title, aiMessage } = data
 
-           if(!chatId) {
-             dispatch(createNewChat({
-                chatId: newChatId,
-                title,
-            }))
+            if (!chatId) {
+                dispatch(createNewChat({
+                    chatId: newChatId,
+                    title,
+                }))
 
-           }
+            }
 
 
             dispatch(addNewMessage({
@@ -63,51 +67,51 @@ export const useChat = () => {
         dispatch(setLoading(false))
     }
 
-  async function handleOpenChat(chatId) {
-    
-    const data = await getMessages(chatId)
-    const { messages } = data
+    async function handleOpenChat(chatId) {
 
-    const formattedMessages = messages.map(message => ({
-        content: message.content,
-        role: message.role,
-    }))
+        const data = await getMessages(chatId)
+        const { messages } = data
 
-    dispatch(addMessages({
-        chatId,
-        messages: formattedMessages,
-    }))
+        const formattedMessages = messages.map(message => ({
+            content: message.content,
+            role: message.role,
+        }))
+
+        dispatch(addMessages({
+            chatId,
+            messages: formattedMessages,
+        }))
         dispatch(setCurrentChatId(chatId))
 
-  }
-
-
-
-  async function handleDeleteChat(chatId) {
-    try {
-        dispatch(setLoading(true));
-
-        await deleteChat(chatId);
-
-        // chat list refresh
-        await handleGetChats();
-
-        dispatch(setCurrentChatId(null));
-
-    } catch (error) {
-        console.error(error);
-        dispatch(setError(error.message));
-    } finally {
-        dispatch(setLoading(false));
     }
-}
 
-async function handleLogout() {
-  await logout();
-  dispatch(setUser(null));
-  dispatch(setChats({}));
-  dispatch(setCurrentChatId(null));
-}
+
+
+    async function handleDeleteChat(chatId) {
+        try {
+            dispatch(setLoading(true));
+
+            await deleteChat(chatId);
+
+            // chat list refresh
+            await handleGetChats();
+
+            dispatch(setCurrentChatId(null));
+
+        } catch (error) {
+            console.error(error);
+            dispatch(setError(error.message));
+        } finally {
+            dispatch(setLoading(false));
+        }
+    }
+
+    async function handleLogout() {
+        await logout();
+        dispatch(setUser(null));
+        dispatch(setChats({}));
+        dispatch(setCurrentChatId(null));
+    }
 
 
     return {

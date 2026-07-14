@@ -42,6 +42,7 @@ export function useAuth() {
         try {
             dispatch(setError(null))
             dispatch(setLoading(true))
+            
             const data = await getMe()
             if (data?.user) {
                 dispatch(setUser(data.user))

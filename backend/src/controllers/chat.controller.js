@@ -9,9 +9,10 @@ export async function sendMessage(req, res) {
 
     const { message,  chatId } = req.body;
 
-console.log("Request Body:", req.body);
-console.log("Message:", message);
-console.log("ChatId:", chatId);
+// console.log("Request Body:", req.body);
+// console.log("Message:", message);
+// console.log("ChatId:", chatId);
+
     let title = null, chat = null;
 
     if (!chatId) {

@@ -45,21 +45,3 @@ const chatSlice = createSlice({
 export const { setChats, setCurrentChatId, setLoading, setError, createNewChat,addNewMessage , addMessages } = chatSlice.actions
 export default chatSlice.reducer
 
-
-// chats = {
-//     "docker and AWS": {
-//         messages: [
-//             {
-//                 role: "user",
-//                 content: "What is docker?"
-//             },
-//             {
-//                 role: "ai",
-//                 content: "Docker is a platform that allows developers to automate the deployment of applications inside lightweight, portable containers. It provides an efficient way to package and distribute software, ensuring consistency across different environments."
-//             }
-//         ],
-//         id: "docker and AWS",
-//         lastUpdated: "2024-06-20T12:34:56Z",
-//     }
-
-// }

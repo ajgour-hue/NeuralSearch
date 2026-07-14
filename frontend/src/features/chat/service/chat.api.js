@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-// console.log("ENV URL =", import.meta.env.VITE_API_URL);
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
     withCredentials: true,
 });
+
+
 export const sendMessage = async ({ message, chatId }) => {
     const response = await api.post(
       `/api/chats/message`,
@@ -36,3 +37,4 @@ export const logout = async () => {
   const response = await api.post(`/api/auth/logout`);
   return response.data;
 };
+

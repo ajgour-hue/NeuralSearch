@@ -11,14 +11,16 @@ import {
 import Sidebar from '../../component/Sidebar';
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import { useNavigate } from 'react-router-dom';
 
 const Dashboard = () => {
   const chat = useChat()
   const inputRef = useRef();
-
+  const user = useSelector((state) => state.auth.user);
   const [chatInput, setChatInput] = useState('')
   const [isThinking, setIsThinking] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  // const [showLoginModal, setShowLoginModal] = useState(false);
 
   const chats = useSelector((state) => state.chat.chats)
   const currentChatId = useSelector(
@@ -29,10 +31,20 @@ const Dashboard = () => {
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  useEffect(() => {
-    chat.initializeSocketConnection();
-    chat.handleGetChats();
-  }, []);
+  const navigate = useNavigate();
+
+   const openChat = (chatId) => {
+    chat.handleOpenChat(chatId)
+  }
+  
+ 
+useEffect(() => {
+  if (!user) return;
+
+  chat.initializeSocketConnection();
+  chat.handleGetChats();
+}, [user]);
+
 
   useEffect(() => {
     // focus the input field only if the screen width is greater than or equal to 768px (desktop view)  
@@ -50,6 +62,14 @@ const Dashboard = () => {
   }, [currentChatId]);
 
 
+  useEffect(() => {
+    const pendingMessage = sessionStorage.getItem("pendingMessage");
+
+    if (pendingMessage) {
+        setChatInput(pendingMessage);
+        sessionStorage.removeItem("pendingMessage");
+    }
+}, []); 
 
 
   // hardcoded suggestions and sources for the demo, can be made dynamic in the future
@@ -74,12 +94,25 @@ const Dashboard = () => {
   ];
 
 
+  // handling the message submission
   const handleSubmitMessage = async (event) => {
     event.preventDefault();
 
     const trimmedMessage = chatInput.trim();
 
     if (!trimmedMessage) return;
+
+    // if(!user){
+    //   setShowLoginModal(true);
+    //   return;
+    // }
+
+
+    if (!user) {
+      sessionStorage.setItem("pendingMessage", trimmedMessage);
+      navigate("/login");
+      return;
+    }
 
     setIsThinking(true);
 
@@ -95,25 +128,29 @@ const Dashboard = () => {
     inputRef.current?.focus();
   };
 
-  const openChat = (chatId) => {
-    chat.handleOpenChat(chatId)
+//  handling the search input phone
+ const handleSearch = async (query) => {
+
+  if (!user) {
+    sessionStorage.setItem("pendingMessage", query);
+    navigate("/login");
+    return;
   }
 
-  // the quick search buttons handlinhg
-  const handleSearch = async (query) => {
-    setChatInput(query);
-    setIsThinking(true);
+  setChatInput(query);
+  setIsThinking(true);
 
-    try {
-      await chat.handleSendMessage({
-        message: query,
-        chatId: currentChatId,
-      });
-      setChatInput("");
-    } finally {
-      setIsThinking(false);
-    }
-  };
+  try {
+    await chat.handleSendMessage({
+      message: query,
+      chatId: currentChatId,
+    });
+
+    setChatInput("");
+  } finally {
+    setIsThinking(false);
+  }
+};
 
 
   return (
