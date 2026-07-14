@@ -33,17 +33,17 @@ const Dashboard = () => {
 
   const navigate = useNavigate();
 
-   const openChat = (chatId) => {
+  const openChat = (chatId) => {
     chat.handleOpenChat(chatId)
   }
-  
- 
-useEffect(() => {
-  if (!user) return;
 
-  chat.initializeSocketConnection();
-  chat.handleGetChats();
-}, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    chat.initializeSocketConnection();
+    chat.handleGetChats();
+  }, [user]);
 
 
   useEffect(() => {
@@ -66,10 +66,10 @@ useEffect(() => {
     const pendingMessage = sessionStorage.getItem("pendingMessage");
 
     if (pendingMessage) {
-        setChatInput(pendingMessage);
-        sessionStorage.removeItem("pendingMessage");
+      setChatInput(pendingMessage);
+      sessionStorage.removeItem("pendingMessage");
     }
-}, []); 
+  }, []);
 
 
   // hardcoded suggestions and sources for the demo, can be made dynamic in the future
@@ -128,29 +128,29 @@ useEffect(() => {
     inputRef.current?.focus();
   };
 
-//  handling the search input phone
- const handleSearch = async (query) => {
+  //  handling the search input phone
+  const handleSearch = async (query) => {
 
-  if (!user) {
-    sessionStorage.setItem("pendingMessage", query);
-    navigate("/login");
-    return;
-  }
+    if (!user) {
+      sessionStorage.setItem("pendingMessage", query);
+      navigate("/login");
+      return;
+    }
 
-  setChatInput(query);
-  setIsThinking(true);
+    setChatInput(query);
+    setIsThinking(true);
 
-  try {
-    await chat.handleSendMessage({
-      message: query,
-      chatId: currentChatId,
-    });
+    try {
+      await chat.handleSendMessage({
+        message: query,
+        chatId: currentChatId,
+      });
 
-    setChatInput("");
-  } finally {
-    setIsThinking(false);
-  }
-};
+      setChatInput("");
+    } finally {
+      setIsThinking(false);
+    }
+  };
 
 
   return (
@@ -250,11 +250,10 @@ useEffect(() => {
               </div>
             ) : (
 
-              <div className="h-full overflow-y-auto">
-                <div className="max-w-6xl mx-auto px-4 md:px-8 pt-8 md:pt-16 pb-24">
-
+              <div className="h-full">
+                <div className="max-w-6xl mx-auto px-4 md:px-8 pt-4 md:pt-16 pb-32 md:pb-24">
                   {/* Logo */}
-                  <div className="flex items-center justify-center mb-12">
+                  <div className="flex items-center justify-center mb-6 md:mb-12">
                     <img
                       src="/perplexity.svg"
                       alt="Perplexity"
@@ -306,7 +305,7 @@ useEffect(() => {
 
 
                   {/* Suggestions */}
-                  <div className="space-y-0 mb-10 md:mb-12 max-w-5xl mx-auto w-full">
+                  <div className="space-y-0 mb-6 md:mb-12 max-w-5xl mx-auto w-full">
                     {suggestions.map((item) => (
                       <button
                         key={item}
