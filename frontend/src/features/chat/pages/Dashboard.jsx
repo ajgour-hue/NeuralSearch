@@ -154,8 +154,7 @@ const Dashboard = () => {
 
 
   return (
-    <div className="flex min-h-screen bg-[#050505] text-zinc-100 overflow-hidden">
-
+  <div className="flex h-dvh bg-[#050505] text-zinc-100 overflow-hidden">
       {/* Sidebar */}
 
 
@@ -169,8 +168,7 @@ const Dashboard = () => {
       />
 
       {/* Main Area */}
-      <div className="flex-1 md:ml-[210px] flex flex-col h-screen overflow-hidden">
-
+   <div className="flex-1 md:ml-[210px] flex flex-col h-dvh overflow-hidden">
 
         {/* hamburger menu */}
         <div className="md:hidden h-14 flex items-center px-4 border-b border-white/10 bg-[#050505]">
@@ -265,148 +263,76 @@ const Dashboard = () => {
                     </span>
                   </div>
 
-                  <div className="hidden md:block">
- 
 
                   {/* Category Buttons */}
-
                   <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-8 md:mb-12 px-2">
 
-
-
                     <button
-
                       onClick={() => handleSearch("Latest Trending Technology News")}
-
                       className="flex items-center gap-2 px-4 md:px-6 py-2 text-sm md:text-base rounded-full border border-zinc-800 text-zinc-300 hover:bg-zinc-900 transition"
-
                     >
-
                       <RiGlobalLine size={16} />
-
                       <span>Trending Tech</span>
-
                     </button>
 
-
-
                     <button
-
                       onClick={() => handleSearch("Top Startup Companies 2025")}
-
                       className="flex items-center gap-2 px-4 md:px-6 py-2 text-sm md:text-base rounded-full border border-zinc-800 text-zinc-300 hover:bg-zinc-900 transition"
-
                     >
-
                       <RiBarChartBoxLine size={16} />
-
                       <span>Startups</span>
-
                     </button>
 
-
-
                     <button
-
                       onClick={() => handleSearch("Best AI Tools in 2025")}
-
                       className="flex items-center gap-2 px-4 md:px-6 py-2 text-sm md:text-base rounded-full border border-zinc-800 text-zinc-300 hover:bg-zinc-900 transition"
-
                     >
-
                       <RiSparklingLine size={16} />
-
                       <span>AI Tools</span>
-
                     </button>
-
-
 
                     <button
-
                       onClick={() => handleSearch("Latest Gadgets and Tech Products")}
-
                       className="flex items-center gap-2 px-4 md:px-6 py-2 text-sm md:text-base rounded-full border border-zinc-800 text-zinc-300 hover:bg-zinc-900 transition"
-
                     >
-
                       <RiCompass3Line size={16} />
-
                       <span>Gadgets</span>
-
                     </button>
-
-
 
                   </div>
-
-
-
-
 
 
 
                   {/* Suggestions */}
-
                   <div className="space-y-0 mb-6 md:mb-12 max-w-5xl mx-auto w-full">
-
                     {suggestions.map((item) => (
-
                       <button
-
                         key={item}
-
                         onClick={() => handleSearch(item)}
-
                         className="w-full text-left py-4 border-b border-white/10 text-zinc-400 hover:text-white transition"
-
                       >
-
                         {item}
-
                       </button>
-
                     ))}
-
                   </div>
-
-
 
                   {/* Source Cards */}
-
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-
                     {sources.map((source) => (
-
                       <button
-
                         key={source.title}
-
                         onClick={() => handleSearch(source.title)}
-
                         className="rounded-3xl border border-white/10 bg-[#0b0b0b] p-6 text-left hover:bg-[#111] transition"
-
                       >
-
                         <h3 className="text-lg font-semibold text-white">
-
                           {source.title}
-
                         </h3>
 
-
-
                         <p className="mt-2 text-sm text-zinc-500 uppercase">
-
                           {source.site}
-
                         </p>
-
                       </button>
-
                     ))}
-
-                  </div>
                   </div>
 
                 </div>
