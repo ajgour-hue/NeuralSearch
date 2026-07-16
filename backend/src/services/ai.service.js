@@ -50,36 +50,8 @@ const agent = createAgent({
 })
 
 
+// console.log("🔥 generateResponse called");
 
-// export async function generateResponse(messages) {
-//   try {
-//     console.log("Received messages:", messages);
-
-//     const response = await mistralModel.invoke(
-//       messages.map((msg) => {
-//         if (msg.role === "user") {
-//           return new HumanMessage(msg.content);
-//         }
-
-//         if (msg.role === "ai") {
-//           return new AIMessage(msg.content);
-//         }
-//       })
-//     );
-
-//     console.log("Gemini Response:", response);
-
-//     return response.content;
-//   } catch (error) {
-//     console.error("GEMINI ERROR:", error);
-//     throw error;
-//   }
-// }
-
-
-// agent response
-
-console.log("🔥 generateResponse called");
 export async function generateResponse(messages) {
     console.log("Received messages:", messages);
     const response = await agent.invoke({

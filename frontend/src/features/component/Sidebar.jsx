@@ -56,6 +56,7 @@ const Sidebar = ({ chats = [], currentChatId, openChat, isSidebarOpen, setIsSide
           fixed md:fixed
           top-0 left-0
          h-dvh
+         
           w-[260px] md:w-[210px]
           flex flex-col
           bg-[#050505]
