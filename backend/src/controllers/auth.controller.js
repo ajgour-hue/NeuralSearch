@@ -55,7 +55,7 @@ export const register = async (req, res) => {
 
         await sendEmail({
             to: "ajaygour6264@gmail.com",
-            subject: "Welcome to Perplexity!",
+            subject: "Welcome to NeuralSearch!",
             html: `
                     <p>Hi ${username},</p>
                     <p>Thank you for registering at <strong>Perplexity</strong>.</p>

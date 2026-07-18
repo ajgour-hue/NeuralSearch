@@ -57,7 +57,7 @@ const Dashboard = () => {
     if (currentChat?.title) {
       document.title = `${currentChat.title}`;
     } else {
-      document.title = "Perplexity Clone";
+      document.title = "neuralsearch";
     }
   }, [currentChatId]);
 
@@ -254,12 +254,12 @@ const Dashboard = () => {
                   <div className="flex items-center justify-center mb-6 md:mb-12">
                     <img
                       src="/perplexity.svg"
-                      alt="Perplexity"
+                      alt="NeuralSearch"
                       className="h-8 md:h-12 w-auto brightness-0 invert"
                     />
 
                     <span className="ml-3 text-4xl md:text-8xl font-extralight text-white tracking-tight">
-                      Perplexity
+                      NeuralSearch
                     </span>
                   </div>
 

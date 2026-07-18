@@ -79,12 +79,12 @@ const Sidebar = ({ chats = [], currentChatId, openChat, isSidebarOpen, setIsSide
           <div className="flex items-center">
             <img
               src="/perplexity.svg"
-              alt="Perplexity"
+              alt="neuralsearch"
               className="h-8 w-auto brightness-0 invert"
             />
 
             <span className="ml-3 text-[34px] font-extralight text-white">
-              Perplexity
+              nueralsearch
             </span>
           </div>
 

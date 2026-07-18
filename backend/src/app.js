@@ -23,9 +23,7 @@ app.use(morgan("dev") )
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://perplexity-frontend-hwcu.onrender.com",
-    "https://perplexity-cyan-ten.vercel.app",
-    "https://perplexity-36v6frwb7-ajgour-hues-projects.vercel.app"
+    "https://neuralsearch.vercel.app",
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE"],

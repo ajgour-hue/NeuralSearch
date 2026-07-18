@@ -1,8 +1,8 @@
-# Perplexity Clone
+# NeuralSearch
 
-A full-stack AI-powered conversational search app inspired by Perplexity — ask a question, and the app searches the internet in real time and answers using an LLM agent, complete with chat history and streaming responses.
+A full-stack AI-powered conversational search app inspired by NeuralSearch — ask a question, and the app searches the internet in real time and answers using an LLM agent, complete with chat history and streaming responses.
 
-**Live demo:** https://perplexity-cyan-ten.vercel.app
+**Live demo:** https://neuralsearch.vercel.app
 
 The project is split into two apps:
 
@@ -59,7 +59,7 @@ graph TD
 ## Repository Structure
 
 ```
-perplexity/
+NeuralSearch/
 ├── backend/
 │   ├── server.js
 │   └── src/
