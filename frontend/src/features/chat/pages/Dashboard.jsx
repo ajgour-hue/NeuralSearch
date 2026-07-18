@@ -76,22 +76,31 @@ const Dashboard = () => {
 
   // hardcoded suggestions and sources for the demo, can be made dynamic in the future
   const suggestions = [
-    "Summarize this: Tech | CNN Business",
-    "Tell me more about Tech News | Today's Latest Tech...",
-    "What are the top 5 programming news today?",
-    "Explain the latest tech market shifts",
-    "Search for best developer tools 2026",
+    "How close are we to room-temperature superconductors?",
+    "Explain quantum computing like I'm a curious 12-year-old",
+    "What did we miss while doomscrolling this week?",
+    "Which startups are quietly eating Big Tech's lunch?",
+    "Show me the weirdest scientific discovery of 2026",
+    "What's actually inside a Mars rover's brain?",
   ];
 
   // these sources are just for demo purposes, we can make them dynamic in the future as well.
   const sources = [
     {
-      title: "Tech | CNN Business",
-      site: "NEWS · CNN.COM",
+      title: "Inside the AI Chip Race Nobody's Talking About",
+      site: "DEEP DIVE · WIRED.COM",
     },
     {
-      title: "Tech News | Today's Latest Technology News | Reuters",
-      site: "NEWS · REUTERS.COM",
+      title: "The Quiet Return of Nuclear Power",
+      site: "ANALYSIS · MIT TECHNOLOGY REVIEW",
+    },
+    {
+      title: "Why Space Junk Is Becoming a Trillion-Dollar Problem",
+      site: "EXPLAINER · BLOOMBERG.COM",
+    },
+    {
+      title: "The Startups Building Tech's Next Boring Revolution",
+      site: "FEATURE · THE VERGE",
     },
   ];
 
@@ -169,8 +178,12 @@ const Dashboard = () => {
         handleDeleteChat={chat.handleDeleteChat}
       />
 
-      {/* Main Area */}
-   <div className="flex-1 md:ml-[210px] flex flex-col h-dvh overflow-hidden">
+      {/* Main Area
+          md:ml follows the sidebar's live width via the --sidebar-width CSS
+          variable that Sidebar publishes, so it stays in sync while you
+          drag-resize on desktop. On mobile the sidebar is an overlay, not
+          part of the flow, so there is intentionally no margin there. */}
+   <div className="flex-1 md:ml-[var(--sidebar-width,260px)] flex flex-col h-dvh overflow-hidden">
 
         {/* hamburger menu */}
         <div className="md:hidden h-14 flex items-center px-4 border-b border-white/10 bg-[#050505]">
