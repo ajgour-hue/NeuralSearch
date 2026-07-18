@@ -7,6 +7,8 @@ import {
   RiSparklingLine,
   RiCompass3Line,
   RiMicLine,
+  RiBrainLine,
+  RiBrain2Fill
 } from "@remixicon/react";
 import Sidebar from '../../component/Sidebar';
 import ReactMarkdown from "react-markdown";
@@ -251,17 +253,15 @@ const Dashboard = () => {
               <div className="h-full">
                 <div className="max-w-6xl mx-auto px-4 md:px-8 pt-4 md:pt-16 pb-32 md:pb-24">
                   {/* Logo */}
-                  <div className="flex items-center justify-center mb-6 md:mb-12">
-                    <img
-                      src="/perplexity.svg"
-                      alt="NeuralSearch"
-                      className="h-8 md:h-12 w-auto brightness-0 invert"
-                    />
-
-                    <span className="ml-3 text-4xl md:text-8xl font-extralight text-white tracking-tight">
-                      NeuralSearch
-                    </span>
-                  </div>
+              <div className="flex items-center justify-center gap-3 md:gap-5 mb-8 md:mb-12">
+                  <RiBrain2Fill 
+                    className="text-white text-4xl md:text-6xl"
+                    size={50}
+                  />
+  <h1 className="text-4xl md:text-7xl font-light tracking-tight text-white">
+    NeuralSearch
+  </h1>
+</div>
 
 
                   {/* Category Buttons */}

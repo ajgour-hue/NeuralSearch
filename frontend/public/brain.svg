@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <g stroke="white" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Brain Outline -->
+    <path d="M220 60c-45 0-80 35-80 80v20c-30 10-50 38-50 70 0 34 20 62 50 72v20c0 45 35 80 80 80h36V60h-36z"></path>
+    <path d="M292 60c45 0 80 35 80 80v20c30 10 50 38 50 70 0 34-20 62-50 72v20c0 45-35 80-80 80h-36V60h36z"></path>
+
+    <!-- Center -->
+    <line x1="256" y1="60" x2="256" y2="452"></line>
+
+    <!-- Left Neural Lines -->
+    <path d="M180 150 L220 175"></path>
+    <circle cx="170" cy="145" r="9"></circle>
+    <path d="M170 230 L220 250"></path>
+    <circle cx="160" cy="225" r="9"></circle>
+    <path d="M170 320 L220 345"></path>
+    <circle cx="160" cy="315" r="9"></circle>
+
+    <!-- Right Neural Lines -->
+    <path d="M332 150 L292 175"></path>
+    <circle cx="342" cy="145" r="9"></circle>
+    <path d="M342 230 L292 250"></path>
+    <circle cx="352" cy="225" r="9"></circle>
+    <path d="M342 320 L292 345"></path>
+    <circle cx="352" cy="315" r="9"></circle>
+  </g>
+</svg>
