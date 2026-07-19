@@ -70,7 +70,7 @@ export async function generateResponse(messages) {
 
 // title for the chat
 export async function generateTitle(message) {
-  const response = await openrouterModel.invoke([
+  const response = await mistralModel.invoke([
     new SystemMessage(`
 You generate short, clear conversation titles.
 
