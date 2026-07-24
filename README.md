@@ -86,13 +86,31 @@ NeuralSearch/
 │       │   └── server.socket.js      # Socket.IO server init
 │       └── validators/
 │           └── auth.validator.js
-├── frontend/
-│   └── src/
-│       ├── app/
-│       │   ├── App.jsx
-│       │   ├── app.store.js
-│       │   └── index.css
-│       └── main.jsx
+frontend/
+├── node_modules/
+├── public/
+│   ├── brain.svg
+│   ├── perplexity.svg.
+├── src/
+│   ├── app/
+│   │   ├── App.jsx
+│   │   ├── app.routes.jsx
+│   │   ├── app.store.js
+│   │   └── index.css
+│   ├── features/
+│   │   ├── auth/
+│   │   │   ├── hook/
+│   │   │   ├── pages/
+│   │   │   ├── services/
+│   │   │   └── auth.slice.js
+│   │   └── chat/
+│   │       ├── hooks/
+│   │       ├── pages/
+│   │       ├── service/
+│   │       └── chat.slice.js
+│   ├── component/
+│   │   └── Sidebar.jsx
+│   └── main.jsx
 ├── processOfNodemailer.md   # Reference guide for Nodemailer + Gmail OAuth2 setup
 └── README.md
 ```
