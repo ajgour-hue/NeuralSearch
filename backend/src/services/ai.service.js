@@ -28,7 +28,7 @@ const openrouterModel = new ChatOpenAI({
     baseURL: "https://openrouter.ai/api/v1",
   },
 
-  apiKey: process.env.OPEN_ROUTER_API,
+  apiKey: process.env.OPEN_ROUTER_API_KEY,
 });
 
 
