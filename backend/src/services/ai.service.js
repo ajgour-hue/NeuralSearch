@@ -22,7 +22,7 @@ const mistralModel = new ChatMistralAI({
 
 // OpenRouter model
 const openrouterModel = new ChatOpenAI({
-  model: "nvidia/nemotron-3-ultra-550b-a55b:free",
+  model: "gpt-4o-mini",
 
   configuration: {
     baseURL: "https://openrouter.ai/api/v1",
@@ -30,6 +30,7 @@ const openrouterModel = new ChatOpenAI({
 
   apiKey: process.env.OPEN_ROUTER_API,
 });
+
 
 // tool for web search
 const searchTool =  tool(
@@ -45,7 +46,7 @@ const searchTool =  tool(
 
 // agent that uses the search tool and the mistral model
 const agent = createAgent({ 
-  model: mistralModel,
+  model: openrouterModel,
   tools: [searchTool],
 })
 
@@ -70,7 +71,7 @@ export async function generateResponse(messages) {
 
 // title for the chat
 export async function generateTitle(message) {
-  const response = await mistralModel.invoke([
+  const response = await openrouterModel.invoke([
     new SystemMessage(`
 You generate short, clear conversation titles.
 
