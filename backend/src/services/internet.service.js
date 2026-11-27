@@ -22,7 +22,7 @@
 import { tavily } from "@tavily/core";
 
 const tavilyClient = tavily({
-  apiKey: process.env.TAVILY_API_KEY,
+  apiKey: process.env.TAVILY_API_KEY_1,
 });
 
 export const searchInternet = async ({ query }) => {
